@@ -4,9 +4,9 @@
 
 ## Product outcome
 
-- **Primary outcome:** _____
-- **In scope for Week 6:** _____
-- **Explicit exclusions:** _____
+- **Primary outcome:** Service Agents can locate a customer and view their full interaction history in under [X] seconds, reducing average case handling time and eliminating agent context-switching between systems. New agents reach productivity (defined as completing standard lookups unassisted) within their first week, supported by in-app documentation.
+- **In scope for Week 6:** React Frontend UI, Spring Boot Backend, PostgreSQL integration, Notifications, Kafka Events, Logs/Metrics/Traces, Identity Provider.
+- **Explicit exclusions:** Billing, real PII import, digital storefront.
 - **Success measure (demo):** Agent records interaction for `CUS-1001` with `lab-request-001` and can prove UI→API→DB→event (Labs 49–52).
 
 ## Actors / systems
