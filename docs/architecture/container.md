@@ -1,22 +1,28 @@
-# Design Containers and Data Flow
+# C4 Container — Customer Management Platform
 
-```mermaid
-flowchart LR
-  Agent["Service Agent"] -->|HTTPS| UI["REACT CRM"]
-  Manager["Manager"] -->|HTTPS| UI["REACT CRM"]
-  Operator["Platform Operator"] -->|HTTPS admin| UI["REACT CRM"]
+> **TODO:** Place React, Spring Boot, PostgreSQL, Kafka, IdP, and observability. Note sync vs async paths.
 
-  UI -->|"REST + JWT"| API["Sprint Boot API"]
-  API -->|JPA/JDBC| DB[("PostgreSQL")]
-  API -->|"Customer Events"| K[("Kafka")]
-  K --> Worker["Notification Consumer"]
-  API --> Obs["Logs / Metrics / Traces"]
-  Worker --> Obs
-  IdP["Identity Provider"] --> |OIDC/JWT| UI
-  IdP --> |JWKS| API
-```
+## Containers
 
-# Ownership Candidates
+| Container | Responsibility | Tech | Data store / topics |
+| --------- | -------------- | ---- | ------------------- |
+| `crm-web` | _____ | React | — |
+| `crm-api` | _____ | Spring Boot | JDBC → PostgreSQL |
+| `crm-db` | _____ | PostgreSQL | schemas / tables |
+| `crm-events` | _____ | Kafka | topic: _____ |
+| `idp` | _____ | _____ | — |
+| `obs` | _____ | _____ | logs / metrics |
 
-- **Customer** - Owned by CustomerService. Authoritative source of truth for customer identity.
-- **Notifications** - Estimated to be a future NotificationService. Dependent on the scope of this file
+## Data flow (interaction create)
+
+1. Agent → UI → `POST /api/v1/interactions` with `X-Correlation-ID: lab-request-001`
+2. API validates → persists → publishes `CustomerInteractionRecordedV1` (or equivalent)
+3. Consumer _____ (idempotent / DLT notes): _____
+
+## Open decisions → ADRs
+
+- Database: see `docs/adrs/ADR-001-postgresql.md` (or draft from `_ADR-TEMPLATE.md`)
+- Messaging: _____
+- Consistency (persist + publish): _____
+- Auth: _____
+- Deploy: _____

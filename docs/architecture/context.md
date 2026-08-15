@@ -1,50 +1,56 @@
-# Product Outcome
+# C4 Context — Customer Management Platform
 
-## Primary Users
+> **TODO (session block):** Replace every `_____` / stub box. Fixtures: `CUS-1001` Amina, `CUS-1002` Ravi, correlation `lab-request-001`.
 
-- Agent
-- Manager
-- Operator
+## Product outcome
 
-## Journeys
+- **Primary outcome:** _____
+- **In scope for Week 6:** _____
+- **Explicit exclusions:** _____
+- **Success measure (demo):** Agent records interaction for `CUS-1001` with `lab-request-001` and can prove UI→API→DB→event (Labs 49–52).
 
-- Search for existing customers (Amina and/or Ravi)
-- View profile
-- Record and log interactions
-- Change status (within scope)
+## Actors / systems
 
-## In-Scope Capabilities vs Explicit Exclusions
+| Actor / system | Role | Trust boundary notes |
+| -------------- | ---- | -------------------- |
+| Service agent | _____ | _____ |
+| IdP / JWT issuer | _____ | _____ |
+| React CRM UI | _____ | _____ |
+| Spring Boot API | _____ | _____ |
+| PostgreSQL | _____ | _____ |
+| Kafka | _____ | _____ |
+| Observability | _____ | _____ |
 
-### Capabilities
+## Context diagram (stub)
 
-### Exclusions
+```text
+                    [ Service agent ]
+                            |
+                            v
+                   +------------------+
+                   |   React CRM UI   |
+                   +--------+---------+
+                            |
+                     HTTPS / JWT
+                            |
+                   +--------v---------+
+                   | Spring Boot API  |
+                   +--+-----------+---+
+                      |           |
+                      v           v
+              [ PostgreSQL ]  [ Kafka ]
+                      |
+                      v
+                 [ IdP / JWT ]
 
-## Success Measures (Tied to lab 52)
-
-## Questions with owners and due dates
-
-# System Context View
-
-```mermaid
-graph TB
-    subgraph Users["People"]
-        agent["Service Agent"]
-        manager["Manager"]
-        operator["Platform Operator"]
-    end
-
-    subgraph InScope["In Scope"]
-        crm["CRM Platform"]
-    end
-
-    subgraph External["External Systems"]
-        identity["Identity Provider<br/>(AuthN/AuthZ)"]
-        gateway["Email/SMS Gateway<br/>(optional)"]
-    end
-
-    agent -->|HTTPS| crm
-    manager -->|HTTPS| crm
-    operator -->|HTTPS admin| crm
-    crm -->|OIDC/JWT| identity
-    crm -->|HTTPS| gateway
+TODO: add arrows for protocols, label trust boundaries, note out-of-scope systems.
 ```
+
+## Fixture anchors (must appear in demo stories)
+
+| ID | Name | Notes |
+| -- | ---- | ----- |
+| `CUS-1001` | Amina Khan | `ACTIVE` — primary interaction demo |
+| `CUS-1002` | Ravi Singh | `PROSPECT` → `ACTIVE` |
+| `CUS-9999` | — | not-found paths |
+| `lab-request-001` | — | correlation ID |
