@@ -13,38 +13,48 @@
 
 | Actor / system | Role | Trust boundary notes |
 | -------------- | ---- | -------------------- |
-| Service agent | _____ | _____ |
-| IdP / JWT issuer | _____ | _____ |
-| React CRM UI | _____ | _____ |
-| Spring Boot API | _____ | _____ |
-| PostgreSQL | _____ | _____ |
-| Kafka | _____ | _____ |
-| Observability | _____ | _____ |
+| Service agent | Human End-User; authenticates and interacts with CRM | Untrusted origin - outside permiter until authenticated via IdP. |
+| IdP / JWT issuer | External identity provider; authenticates users and issues signed JWTs | Trusted External System, outside of CRM's own trust boundary. |
+| React CRM UI | Client-Side Frontend | Runs in user's browser - untrusted execution environment; never holds long-term secrets. |
+| Spring Boot API | Backend Application layer; owns business logic | Trust boundary starts here. |
+| PostgreSQL | Data Store; system of records | Fully inside trusted boundary. |
+| Kafka | Event backbone; carries domain events | Inside trusted boundary; still requires authz to access. |
+| Observability | Cross-cutting infrastructure; collects logs, metrics, traces | Inside trusted boundary but must avoid leaking sensitive data into logs/traces. |
 
 ## Context diagram (stub)
 
-```text
-                    [ Service agent ]
-                            |
-                            v
-                   +------------------+
-                   |   React CRM UI   |
-                   +--------+---------+
-                            |
-                     HTTPS / JWT
-                            |
-                   +--------v---------+
-                   | Spring Boot API  |
-                   +--+-----------+---+
-                      |           |
-                      v           v
-              [ PostgreSQL ]  [ Kafka ]
-                      |
-                      v
-                 [ IdP / JWT ]
+```mermaid
+graph TB
+    subgraph Untrusted["Untrusted Zone (public/corporate network)"]
+        agent["Service Agent"]
+        manager["Manager"]
+    end
 
-TODO: add arrows for protocols, label trust boundaries, note out-of-scope systems.
+    subgraph Admin["Elevated Trust (internal network)"]
+        operator["Platform Operator"]
+    end
+
+    subgraph InScope["Trusted Zone — In Scope (this system)"]
+        crm["CRM Platform"]
+    end
+
+    subgraph External["External Trusted Third Parties"]
+        identity["Identity Provider<br/>(AuthN/AuthZ)"]
+        gateway["Email/SMS Gateway<br/>(optional — NOT YET IN SCOPE)"]
+    end
+
+    agent -->|HTTPS| crm
+    manager -->|HTTPS| crm
+    operator -->|HTTPS| crm
+    crm -->|OIDC/JWT| identity
+    crm -.->|HTTPS - future| gateway
+
+    style gateway stroke-dasharray: 5 5
 ```
+**Out of scope for this iteration:** Email/SMS Gateway integration is shown 
+for future extensibility but is not implemented in the current system 
+boundary. Case management and Kafka event internals are also out of scope 
+for this context-level view — see `container.md`.
 
 ## Fixture anchors (must appear in demo stories)
 
