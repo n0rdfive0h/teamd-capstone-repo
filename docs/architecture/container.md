@@ -1,5 +1,42 @@
 # C4 Container — Customer Management Platform
 
+## Container Graph (Stub)
+
+```text
+  [ Service agent ]      [ Manager ]      [ Platform operator ]
+     role: AGENT       role: MANAGER       deploy + rollback
+           |                 |                     |
+           +--------+--------+                     |
+                    |                              |
+       HTTPS (browser = untrusted)        kubectl / CI (cluster admin)
+                    |                              |
+           +--------v---------+                    |
+           |   React CRM UI   | crm-web            |
+           +--------+---------+                    |
+                    |                              |
+     HTTPS REST + Bearer JWT + X-Correlation-ID    |
+                    |                              |
+=== trust boundary 1: public edge =================|==================
+                    |                              |
+           +--------v---------+                    |
+           | Spring Boot API  | crm-api <----------+  (manifests -> k3s
+           +--+-----+------+--+                        training namespace)
+              |     |      |
+  JDBC (sync) |     |      | JWKS fetch (HTTPS, sync)
+   +----------+     |      +----------+
+   v                v                 v
+[ PostgreSQL ]  [ Kafka ]      [ IdP / JWT issuer ]
+   crm-db       crm-events        signing authority
+   |                |
+=== trust boundary 2: in-cluster data + messaging ==================
+   |                |
+   +-------+--------+
+           |  logs / metrics (pull)
+           v
+  [ Observability ] obs
+
+Not drawn (out of scope): PII import, billing, email/SMS gateway.
+```
 
 ## Containers
 
