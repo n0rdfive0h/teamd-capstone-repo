@@ -1,6 +1,5 @@
 # NFRs — Customer Management Platform (training targets)
 
-> **TODO:** Fill measurable thresholds for the timed + full path. Do not leave vague adjectives.
 
 Thresholds are agreed. Some measurement tooling is not chosen yet — see "Still to decide" below.
 
