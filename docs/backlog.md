@@ -1,6 +1,4 @@
-# Capstone backlog (starter)
-
-> Prioritize vertical stories. Include interaction recording for Amina (`CUS-1001`).
+# Capstone backlog
 
 | ID | Story | Priority | Acceptance (sketch) | Owner | Lab |
 | -- | ----- | -------- | ------------------- | ----- | --- |
