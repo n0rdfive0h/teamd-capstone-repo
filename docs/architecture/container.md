@@ -1,6 +1,5 @@
 # C4 Container — Customer Management Platform
 
-> **TODO:** Place React, Spring Boot, PostgreSQL, Kafka, IdP, and observability. Note sync vs async paths.
 
 ## Containers
 
