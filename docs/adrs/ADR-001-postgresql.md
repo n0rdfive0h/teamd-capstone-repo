@@ -7,7 +7,6 @@
 
 ## Context
 
-TODO: Why relational persistence for CRM customers/interactions (ACID, query patterns, shared cohort Postgres).
 
 - Interaction writes need real transactions, not best-effort writes.
 - Read patterns are relational: customer joined to an ordered timeline, filtered by status.
