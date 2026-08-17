@@ -1,8 +1,5 @@
 # C4 Context — Customer Management Platform
 
-> **TODO (session block):** Replace every `_____` / stub box. Fixtures: `CUS-1001` Amina, `CUS-1002` Ravi, correlation `lab-request-001`.
->
-> New to this doc set? Read [`docs/README.md`](../README.md) first.
 
 ## Product outcome
 
@@ -25,43 +22,43 @@
 | Kafka | Async transport for versioned interaction events | In-cluster only; payloads carry IDs and type, never `summary` |
 | Observability | Actuator health/metrics + structured logs with correlation ID | Read-only; `/actuator/health/liveness` is the only route that needs no login |
 
-## Context diagram (stub)
+## Context diagram
 
-```text
-  [ Service agent ]      [ Manager ]      [ Platform operator ]
-     role: AGENT       role: MANAGER       deploy + rollback
-           |                 |                     |
-           +--------+--------+                     |
-                    |                              |
-       HTTPS (browser = untrusted)        kubectl / CI (cluster admin)
-                    |                              |
-           +--------v---------+                    |
-           |   React CRM UI   | crm-web            |
-           +--------+---------+                    |
-                    |                              |
-     HTTPS REST + Bearer JWT + X-Correlation-ID    |
-                    |                              |
-=== trust boundary 1: public edge =================|==================
-                    |                              |
-           +--------v---------+                    |
-           | Spring Boot API  | crm-api <----------+  (manifests -> k3s
-           +--+-----+------+--+                        training namespace)
-              |     |      |
-  JDBC (sync) |     |      | JWKS fetch (HTTPS, sync)
-   +----------+     |      +----------+
-   v                v                 v
-[ PostgreSQL ]  [ Kafka ]      [ IdP / JWT issuer ]
-   crm-db       crm-events        signing authority
-   |                |
-=== trust boundary 2: in-cluster data + messaging ==================
-   |                |
-   +-------+--------+
-           |  logs / metrics (pull)
-           v
-  [ Observability ] obs
+## System Context Diagram (with Trust Boundaries)
 
-Not drawn (out of scope): PII import, billing, email/SMS gateway.
+```mermaid
+graph TB
+    subgraph Untrusted["Untrusted Zone (public/corporate network)"]
+        agent["Service Agent"]
+        manager["Manager"]
+    end
+
+    subgraph Admin["Elevated Trust (internal network)"]
+        operator["Platform Operator"]
+    end
+
+    subgraph InScope["Trusted Zone — In Scope (this system)"]
+        crm["CRM Platform"]
+    end
+
+    subgraph External["External Trusted Third Parties"]
+        identity["Identity Provider<br/>(AuthN/AuthZ)"]
+        gateway["Email/SMS Gateway<br/>(optional — NOT YET IN SCOPE)"]
+    end
+
+    agent -->|HTTPS| crm
+    manager -->|HTTPS| crm
+    operator -->|HTTPS| crm
+    crm -->|OIDC/JWT| identity
+    crm -.->|HTTPS - future| gateway
+
+    style gateway stroke-dasharray: 5 5
 ```
+
+**Out of scope for this iteration:** Email/SMS Gateway integration is shown 
+for future extensibility but is not implemented in the current system 
+boundary. Case management and Kafka event internals are also out of scope 
+for this context-level view — see `container.md`.
 
 ## Open questions
 
