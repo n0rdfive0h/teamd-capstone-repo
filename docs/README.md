@@ -22,10 +22,10 @@ Fill at CP1. Other docs use these tokens as placeholders.
 
 | Token | Lane | Owner | Backup |
 | ----- | ---- | ----- | ------ |
-| `[ARCH]` | Docs, evidence index, demo script | | |
-| `[BACKEND]` | API, Kafka, tests | | |
-| `[FRONTEND]` | React, JPA, migrations | | |
-| `[DELIVERY]` | Login/roles, pipeline, deploy, rollback | | |
+| `[ARCH]` | Docs, evidence index, demo script | Jimmy Le-Nguyen | Ethan Pacifico |
+| `[BACKEND]` | API, Kafka, tests | Ethan Pacifico | Aidan Conroy |
+| `[FRONTEND]` | React, JPA, migrations | Aidan Conroy | Nick Smith |
+| `[DELIVERY]` | Login/roles, pipeline, deploy, rollback | Nick Smith | Jimmy Le-Nguyen |
 
 ## Glossary
 
