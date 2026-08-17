@@ -1,6 +1,5 @@
 # Team plan — Capstone
 
-> **TODO:** Owners, milestones, critical path for Labs 49–52.
 
 | Milestone | Owner | Due | Depends on |
 | --------- | ----- | --- | ---------- |
