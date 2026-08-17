@@ -1,4 +1,4 @@
-# Risk register (starter)
+# Risk register
 
 Score = likelihood × impact.
 
