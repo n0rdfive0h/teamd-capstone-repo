@@ -7,7 +7,6 @@
 
 ## Context
 
-TODO: Why async notification of `CustomerInteractionRecordedV1` (or equivalent) after persist.
 
 - Audit and downstream work must stay off the agent's request path.
 - A silent contract change is worst in audit, so the event is self-describing.
