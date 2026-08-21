@@ -1,0 +1,32 @@
+# Build output
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+*.env.local
+
+# Testcontainers / Docker local overrides
+.testcontainers.properties
+
+# Maven wrapper (only if not committing the wrapper itself)
+# .mvn/
+# mvnw
+# mvnw.cmd
