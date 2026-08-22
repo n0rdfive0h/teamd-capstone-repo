@@ -21,7 +21,7 @@ jobs:
           java-version: "21"
           cache: maven
       - name: Verify
-        run: mvn -B clean verify  # TODO(lab51): confirm working-directory backend
+        run: mvn -B clean verify
       - name: Upload surefire
         if: always()
         uses: actions/upload-artifact@v4
@@ -35,8 +35,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Build image (no push secrets in log)
+      - name: Log into GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Build image
         run: |
-          docker build -t crm-api:${GITHUB_SHA} .  # root context — NOT -f backend/Dockerfile backend
-          docker images crm-api:${GITHUB_SHA} --digests
-      # Push + digest record use GHCR credentials from Environment secrets (full path)
+          docker build -t crm-api:${GITHUB_SHA} .
+
+      - name: Tag image for GHCR
+        run: |
+          docker tag crm-api:${GITHUB_SHA} ghcr.io/Team_D/crm-api:${GITHUB_SHA}
+
+      - name: Push image
+        run: |
+          docker push ghcr.io/Team_D/crm-api:${GITHUB_SHA}
+
+      - name: Get digest
+        id: digest
+        run: |
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/Team_D/crm-api:${GITHUB_SHA})
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
+
+      - name: Print digest
+        run: echo "Image digest is ${{ steps.digest.outputs.digest }}"
