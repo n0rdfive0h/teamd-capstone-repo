@@ -18,7 +18,6 @@ spec:
       serviceAccountName: crm-api-sa
       imagePullSecrets:
         - name: ghcr-secret
-
       containers:
         - name: crm-api
           # TODO: replace with immutable digest from pipeline
