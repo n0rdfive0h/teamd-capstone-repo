@@ -22,7 +22,7 @@ spec:
       containers:
         - name: crm-api
           # TODO: replace with immutable digest from pipeline
-          image: ghcr.io/Team_D/crm-api:digest
+          image: ghcr.io/Team_D/crm-api:sha256:d1666c342aaeea46a1db2436d918d58a230bcab3b18994718bda697723f98a84
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
