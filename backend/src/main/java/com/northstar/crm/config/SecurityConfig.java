@@ -1,4 +1,4 @@
-package com.example.customermanagementplatform.config;
+package com.northstar.crm.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,31 +13,25 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            // REST API: no server-side sessions
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http)
+      throws Exception {
 
-            // API authorization rules
-            .authorizeHttpRequests(auth -> auth
-                // Kubernetes/application health checks are public
-                .requestMatchers("/actuator/health/**").permitAll()
+    http
+        .csrf(csrf -> csrf.disable())
 
-                // Everything under /api requires a valid JWT
-                .requestMatchers("/api/**").authenticated()
+        .sessionManagement(session ->
+            session.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS))
 
-                // Deny anything not explicitly permitted
-                .anyRequest().denyAll()
-            )
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/actuator/health/**").permitAll()
+            .requestMatchers("/api/**").authenticated()
+            .anyRequest().denyAll())
 
-            // Validate Bearer JWTs
-            .oauth2ResourceServer(oauth2 ->
-                oauth2.jwt(jwt -> {})
-            );
+        .oauth2ResourceServer(oauth2 ->
+            oauth2.jwt(jwt -> {}));
 
-        return http.build();
-    }
+    return http.build();
+  }
 }
