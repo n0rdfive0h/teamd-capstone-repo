@@ -34,11 +34,59 @@
 
 ## Close
 
-- Residual risks owned: _____
-- What we would do with one more week: _____
+- Residual risks owned: 
+> - Reliance on fixtures (No true owner).
+> - InteractionType not validated (Backend).
+> - Actor/Agent is a placeholder, no true identity (Backend).
+> - Testcontainers/Docker Desktop/Windows incompatibility (Backend).
+> - 
+- What we would do with one more week: 
+> - Tailor the app for creation of real data, less reliant on fixtures.
+> - Add a stylized interactions table or graph.
 
 ## Script notes / TODOs
 
-- Exact curl commands: _____
-- SQL snippet: _____
-- Topic name: _____
+- Exact curl commands:
+ ```powershell
+  # Create an interaction (Amina)
+  curl -i -X POST "http://localhost:8080/api/v1/interactions" \
+    -H "Content-Type: application/json" \
+    -H "X-Correlation-ID: lab-request-001" \
+    -d '{"customerId":"CUS-1001","interactionType":"NOTE","summary":"Follow-up on billing question","correlationId":"lab-request-001"}'
+
+  # Get Amina's interaction timeline
+  curl -i "http://localhost:8080/api/v1/customers/CUS-1001/interactions"
+
+  # Get a customer profile
+  curl -i "http://localhost:8080/api/v1/customers/CUS-1001"
+
+  # Search customers by partial name
+  curl -i "http://localhost:8080/api/v1/customers?query=amina"
+
+  # Trigger not-found path (demo negative case)
+  curl -i "http://localhost:8080/api/v1/customers/CUS-9999"
+
+  # Change customer status (legal transition)
+  curl -i -X PATCH "http://localhost:8080/api/v1/customers/CUS-1002/status" \
+    -H "Content-Type: application/json" \
+    -d '{"newStatus":"ACTIVE"}'
+
+  # Trigger illegal transition (demo negative case)
+  curl -i -X PATCH "http://localhost:8080/api/v1/customers/CUS-1001/status" \
+    -H "Content-Type: application/json" \
+    -d '{"newStatus":"PROSPECT"}'
+```
+- SQL snippet:
+```sql
+SELECT ci.id, ci.customer_id, ci.correlation_id, ci.created_at
+  FROM customer_interaction ci
+  LEFT JOIN audit_events ae ON ae.interaction_id = ci.id
+  WHERE ae.event_id IS NULL;
+
+  -- Confirm an interaction's audit row directly:
+  SELECT * FROM audit_events WHERE interaction_id = '<interaction-id>';
+```
+- Topic name: crm.customer.interactions.v1
+    - Dead-letter topic: crm.customer.interactions.v1.DLT
+    - Partition key: customerId
+    - Consumer group: audit-consumer
