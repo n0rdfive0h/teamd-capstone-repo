@@ -18,18 +18,41 @@ spec:
       serviceAccountName: crm-api-sa
       imagePullSecrets:
         - name: ghcr-secret
-
       containers:
         - name: crm-api
           # TODO: replace with immutable digest from pipeline
-          image: ghcr.io/Team_D/crm-api:digest
+          image: ghcr.io/Team_D/crm-api:sha256:d1666c342aaeea46a1db2436d918d58a230bcab3b18994718bda697723f98a84
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:
-            # TODO: wire secrets via Secret/ConfigMap — never hardcode passwords
             - name: SPRING_PROFILES_ACTIVE
               value: "k8s"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: crm-api-secrets
+                  key: DB_PASSWORD
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: crm-api-secrets
+                  key: DB_URL
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: crm-api-secrets
+                  key: DB_USER
+            - name: KAFKA_BOOTSTRAP
+              valueFrom:
+                secretKeyRef:
+                  name: crm-api-secrets
+                  key: KAFKA_BOOTSTRAP
+            - name: JWT_ISSUER_URI
+              valueFrom:
+                secretKeyRef:
+                  name: crm-api-secrets
+                  key: JWT_ISSUER_URI
           resources:
             requests:
               cpu: "100m"
