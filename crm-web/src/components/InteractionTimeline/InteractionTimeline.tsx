@@ -4,6 +4,7 @@ import { InteractionCard } from '../objects/InteractionCard'
 import { LoadingState } from '../shared/LoadingState'
 import { ErrorState } from '../shared/ErrorState'
 import { EmptyState } from '../shared/EmptyState'
+import './InteractionTimeline.css'
 
 interface InteractionTimelineProps {
   interactions: Interaction[]
@@ -19,19 +20,23 @@ export function InteractionTimeline({ interactions, status, error, onRetry }: In
 
   if (status === 'error' && error) {
     return <ErrorState message={error.message} status={error.status} kind={error.kind} onRetry={onRetry} />
-    }
+  }
 
   if (status === 'success' && interactions.length === 0) {
     return <EmptyState message="No interactions yet." />
   }
 
   return (
-    <section aria-label="Interaction timeline">
-      <ul className="interaction-timeline">
-        {interactions.map(interaction => (
-          <InteractionCard key={interaction.interactionId} interaction={interaction} />
-        ))}
-      </ul>
-    </section>
+    <div className="interaction-timeline-wrapper">
+      <div className="interaction-timeline-container">
+        <section aria-label="Interaction timeline">
+          <ul className="interaction-timeline">
+            {interactions.map(interaction => (
+              <InteractionCard key={interaction.interactionId} interaction={interaction} />
+            ))}
+          </ul>
+        </section>
+      </div>
+    </div>
   )
 }

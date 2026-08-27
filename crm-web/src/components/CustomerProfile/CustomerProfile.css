@@ -1,0 +1,22 @@
+/* 1. The Parent Wrapper (This creates the side-by-side layout) */
+.interaction-wrapper {
+  display: flex;
+  flex-direction: row; /* Puts items side-by-side */
+  gap: 1em;          /* Modern spacing between columns */
+  justify-content: center;
+  align-items: flex-start; /* Keeps the form from stretching awkwardly */
+  width: 100%;
+}
+
+/* 2. The Timeline Column (Left side) */
+.interaction-timeline-container-profile {
+  max-width: 55%;        /* Prevents text blowout */
+  min-width: 40%;
+  min-height: 25vh;    /* Keeps your vertical screen constraint */
+  box-sizing: border-box;
+}
+
+.interaction-form-container-profile {
+  width:fit-content;
+}
+
