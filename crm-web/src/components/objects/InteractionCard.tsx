@@ -1,5 +1,6 @@
 import type { Interaction} from '../../types/interaction'
 import { InteractionTypeBadge } from '../shared/InteractionTypeBadge'
+import './InteractionCard.css'
 
 
 interface InteractionCardProps {

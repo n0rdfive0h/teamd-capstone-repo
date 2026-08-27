@@ -1,5 +1,6 @@
 import type {Customer } from '../../types/customer'
 import { StatusBadge } from '../shared/StatusBadge'
+import './CustomerCard.css';
 
 interface CustomerProps {
     customer:Customer
@@ -12,7 +13,7 @@ export function CustomerCard({customer, onSelectCustomer}: CustomerProps) {
             <p>{customer.fullName}</p>
             <p>{customer.email}</p>
             <StatusBadge status={customer.status}/>
-            <button onClick={() => onSelectCustomer(customer.customerId)}>Click for {customer.fullName}'s interactions</button>
+            <button className="customer-button" onClick={() => onSelectCustomer(customer.customerId)}>Click for {customer.fullName}'s interactions</button>
         </article>
     )
 }

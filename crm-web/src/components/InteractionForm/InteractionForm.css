@@ -1,0 +1,15 @@
+.interaction-form {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#interaction-summary {
+    min-width:20vw;
+    min-height:20vw;
+}
+
+.interaction-form-container {
+    width:fit-content;
+}
