@@ -31,8 +31,16 @@ export function InteractionTimeline({ interactions, status, error, onRetry }: In
       <div className="interaction-timeline-container">
         <section aria-label="Interaction timeline">
           <ul className="interaction-timeline">
-            {interactions.map(interaction => (
-              <InteractionCard key={interaction.interactionId} interaction={interaction} />
+            {[...interactions]
+            .sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
+            .map(interaction => (
+              <li key={interaction.interactionId}>
+                <InteractionCard key={interaction.interactionId} interaction={interaction} />
+              </li>
             ))}
           </ul>
         </section>

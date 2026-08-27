@@ -82,7 +82,7 @@ export function CustomerForm ({onCreateCustomer} : CustomerFormProps) {
             />
 
             {submitError && (
-                <p id="summary-error" role="alert">{submitError.message}</p>
+                <p id="customer-form-error" role="alert">{submitError.message}</p>
             )}
 
             <p ref={successRef} tabIndex={-1} className="sr-only" aria-live="polite">
