@@ -10,8 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.northstar.crm.service.InteractionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import com.northstar.crm.api.dto.InteractionResponse;
 import com.northstar.crm.domain.exception.CustomerNotFoundException;
@@ -21,6 +23,8 @@ import org.springframework.http.MediaType;
 
 
 @WebMvcTest(InteractionController.class)
+@AutoConfigureMockMvc(addFilters = false)
+@WithMockUser(roles = "AGENT")
 class InteractionControllerTest {
 
     @Autowired
@@ -28,6 +32,7 @@ class InteractionControllerTest {
 
     @MockBean
     private InteractionService interactionService;
+    @WithMockUser(roles = "AGENT")
 
     @Test
     void create_forAmina_returns201() throws Exception {
