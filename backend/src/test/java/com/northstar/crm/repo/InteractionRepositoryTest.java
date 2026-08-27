@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -15,6 +16,8 @@ class InteractionRepositoryTest {
     @Autowired
     private InteractionRepository interactionRepository;
 
+    @AutoConfigureMockMvc(addFilters = false)
+
     @Test
     @Sql("/seed-interactions.sql")
     void findByCustomerId_returnsAminaInteractionsOrderedByCreatedAtDesc() {
@@ -23,4 +26,5 @@ class InteractionRepositoryTest {
         assertThat(results).hasSize(1);
         assertThat(results.get(0).getCustomerId()).isEqualTo("CUS-1001");
     }
+
 }

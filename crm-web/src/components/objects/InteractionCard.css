@@ -1,0 +1,14 @@
+@import "../../index.css";
+
+.interaction-card {
+    margin: 0.5rem;
+    padding: 1rem;
+
+    border-radius:.5rem;
+
+    max-width:20vw;
+    min-height:fit-content;
+    
+    box-shadow:var(--shadow);
+    border-color:var(--border);
+}

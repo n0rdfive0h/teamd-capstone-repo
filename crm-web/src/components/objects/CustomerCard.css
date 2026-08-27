@@ -1,0 +1,13 @@
+@import "../../index.css";
+
+.customer-card {
+    margin: 0.5rem;
+    padding: 1rem;
+
+    border-radius:.5rem;
+    
+    box-shadow:var(--shadow);
+    border-color:var(--border);
+}
+
+
