@@ -3,13 +3,15 @@
 // **********************************
 import { ApiError } from "./ApiError"
 import type { ProblemDetail } from "../types/problemdetail"
+import { readStoredSession } from "./session"
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL as string
 
 function authHeaders(): Record<string, string> {
-  // No auth exists on the backend yet (Lab 51's job).
-  // Wiring this in later shouldn't require changing callers of http().
-  return {}
+  // Attach the JWT from the current session, if signed in. `/api/auth/login`
+  // itself is unauthenticated, so sending nothing there is harmless.
+  const session = readStoredSession()
+  return session ? { Authorization: `Bearer ${session.token}` } : {}
 }
 
 export async function http<T>(

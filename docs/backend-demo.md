@@ -39,7 +39,7 @@
 - CUS-1001 (Amina Khan, status ACTIVE) already exists from Lab 20/29 seeding — confirmed via GET /api/customers/CUS-1001 returning 200 with matching data.
 - Before demo: run the GET as a pre-check; if 404, re-run the seed POST from Lab 20 (customerId: CUS-1001, fullName: Amina Khan, status: ACTIVE) — expect 409 if it already exists, which is itself confirmation it's there.
 - Correlation ID lab-request-001 passed via X-Correlation-Id header on every call for CAP-12 (interaction create, timeline fetch, event capture, audit lookup), so all demo evidence artifacts can be tied back to that single ID.
-- Auth: obtain $TOKEN via POST /api/auth/login (agent1/agent1) before hitting the interactions endpoint, since CAP-12's "security stub" criterion likely reuses this same auth pattern from Lab 29.
+- Auth: `POST /api/auth/login` with `{"username":"agent1","password":"password"}` returns `{ token, username }`. Send that token as `Authorization: Bearer <token>` on every `/api/v1/**` call. The single fixture user is `agent1`; the password is a hardcoded placeholder until a real user store lands. Tokens are HS256 JWTs signed with `crm.jwt.secret` (dev default in `JwtConfig`, override via `CRM_JWT_SECRET`), carry a `MANAGER` authority, and expire after 8h.
 
 ## Step 3 — Persistence
 

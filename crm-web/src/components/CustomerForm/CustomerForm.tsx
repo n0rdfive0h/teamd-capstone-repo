@@ -1,6 +1,7 @@
 import {useRef, useState} from 'react'
 import type { CustomerDraft } from '../../types/customer'
 import { ApiError } from '../../api/ApiError'
+import './CustomerForm.css'
 
 interface CustomerFormProps {
     onCreateCustomer: (draft: CustomerDraft) => Promise<unknown>

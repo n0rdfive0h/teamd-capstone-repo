@@ -44,4 +44,24 @@ class InteractionControllerSecurityTest {
                     .content(body)
     ).andExpect(status().isUnauthorized());
   }
+
+  @Test
+  void unknownBearerTokenUnauthorized() throws Exception {
+
+    String body = """
+            {
+              "customerId": "CUS-1001",
+              "interactionType": "NOTE",
+              "summary": "Requested address update",
+              "correlationId": "lab-request-001"
+            }
+            """;
+
+    mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/interactions")
+                    .header("Authorization", "Bearer not-a-real-token")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(body)
+    ).andExpect(status().isUnauthorized());
+  }
 }

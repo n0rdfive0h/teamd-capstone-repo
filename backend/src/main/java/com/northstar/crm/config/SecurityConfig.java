@@ -2,7 +2,9 @@ package com.northstar.crm.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,6 +26,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                .cors(Customizer.withDefaults()) // honour CorsConfig for secured routes + preflight
                 .csrf(csrf -> csrf.disable()) // REST API → CSRF OFF
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex
@@ -31,6 +34,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error").permitAll()
+                        // Login is the one open door — it is how a caller gets a token.
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         // Covers POST /api/v1/customers, GET/PATCH /api/v1/customers/{id}/**
                         // — also covers GET /api/v1/customers/{id}/interactions (InteractionController's
                         // timeline endpoint is nested under this path, so no separate rule is needed).

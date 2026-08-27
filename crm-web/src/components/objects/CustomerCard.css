@@ -1,13 +1,71 @@
-@import "../../index.css";
-
-.customer-card {
-    margin: 0.5rem;
-    padding: 1rem;
-
-    border-radius:.5rem;
-    
-    box-shadow:var(--shadow);
-    border-color:var(--border);
+.customer-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1.25rem;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.12s ease;
 }
 
+.customer-row:hover:not(:disabled) {
+  background-color: var(--surface-muted);
+}
 
+.customer-row:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.customer-row:active:not(:disabled) {
+  transform: none;
+}
+
+.customer-row__avatar {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background-color: var(--blue-50);
+  color: var(--blue-700);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.customer-row__identity {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.customer-row__name {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.customer-row__email {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.customer-row__chevron {
+  flex-shrink: 0;
+  color: var(--slate-400);
+}

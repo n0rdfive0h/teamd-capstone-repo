@@ -14,6 +14,12 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${JWT_ISSUER_URI:http://localhost:8081/realms/crm}
+
+# HS256 secret shared by login (token minting) and request auth (token validation).
+# Dev-only default lives in SecurityConfig; override in every real environment via a k8s secret.
+crm:
+  jwt:
+    secret: ${CRM_JWT_SECRET:dev-only-insecure-jwt-secret-change-me-in-prod}
           
   management:
   endpoints:
