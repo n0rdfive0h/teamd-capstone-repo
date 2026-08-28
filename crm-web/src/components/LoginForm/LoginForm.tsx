@@ -48,7 +48,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           name="username"
           type="text"
           autoComplete="username"
-          placeholder="agent1"
+          placeholder="Username"
           value={username}
           onChange={e => setUsername(e.target.value)}
           aria-describedby={error ? 'login-error' : undefined}
@@ -62,7 +62,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           name="password"
           type="password"
           autoComplete="current-password"
-          placeholder="••••••••"
+          placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           aria-describedby={error ? 'login-error' : undefined}
